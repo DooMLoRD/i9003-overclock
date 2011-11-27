@@ -1,1 +1,5 @@
-this repo will contain modified version of milestone-overclock (http://code.google.com/p/milestone-overclock/) for SGS-SL i9003
+this repo will contain modified version of milestone-overclock module (http://code.google.com/p/milestone-overclock/) for SGS-SL i9003
+
+you will need to modify (i9003/Makefile) and change the following to match you machine setup
+KERNEL_BUILD := <path_to_kernel_folder>
+KERNEL_CROSS_COMPILE := <path_to_toolchain_folder>/arm-eabi-4.4.0/bin/arm-eabi-

@@ -1,5 +1,5 @@
-KERNEL_BUILD := /home/doomlord/android/sgs_scl_i9003/working/GB_CHN_UPDATE1/kernel
-KERNEL_CROSS_COMPILE := /home/doomlord/android/system/prebuilt/linux-x86/toolchain/arm-eabi-4.4.0/bin/arm-eabi-
+KERNEL_BUILD := <path_to_kernel_folder>
+KERNEL_CROSS_COMPILE := <path_to_toolchain_folder>/arm-eabi-4.4.0/bin/arm-eabi-
 EXTRA_CFLAGS := -DOMAP36XX
 FILENAME := overclock
 
