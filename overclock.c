@@ -249,11 +249,11 @@ static void set_max_speed(void)
 		cpufreq_stats_table->freq_table[0] = max_rate;
 	else
 		error_cpufreq_stats_table();
-	my_mpu_opps[MAX_VDD1_OPP].vsel = max_vsel;
+	my_mpu_opps[0x4].u_volt = max_vsel*1000;
 #ifdef SMARTREFLEX
-	my_mpu_opps[MAX_VDD1_OPP].sr_adjust_vsel = max_vsel;
+	my_mpu_opps[0x4].sr_adjust_vsel = max_vsel;
 #endif
-	my_mpu_opps[MAX_VDD1_OPP].rate = max_rate*1000;
+	my_mpu_opps[0x4].rate = max_rate*1000;
 }
 
 static void omap2_find_addr(void)
@@ -574,20 +574,20 @@ static int proc_mpu_opps_read(char *buffer, char **buffer_location,
 	if (offset > 0)
 		ret = 0;
 	else
-		for(i = MAX_VDD1_OPP; my_mpu_opps[i].rate; i--) {
+		for(i = 0x4; my_mpu_opps[i].rate; i--) {
 			if(ret >= count)
 				break;
 #ifdef SMARTREFLEX
 			ret += scnprintf(buffer+ret, count-ret, "mpu_opps[%d] rate=%lu opp_id=%u vsel=%u sr_adjust_vsel=%u\n",
 				i, my_mpu_opps[i].rate,
 				my_mpu_opps[i].opp_id,
-				my_mpu_opps[i].vsel,
+				my_mpu_opps[i].u_volt,
 				my_mpu_opps[i].sr_adjust_vsel);
 #else
-			ret += scnprintf(buffer+ret, count-ret, "mpu_opps[%d] rate=%lu opp_id=%u vsel=%u\n",
+			ret += scnprintf(buffer+ret, count-ret, "mpu_opps[%d] rate=%lu opp_id=%u vsel=%lu\n",
 				i, my_mpu_opps[i].rate,
 				my_mpu_opps[i].opp_id,
-				my_mpu_opps[i].vsel);
+				my_mpu_opps[i].u_volt);
 #endif
 		}
 
@@ -606,7 +606,7 @@ static int proc_mpu_opps_write(struct file *filp, const char __user *buffer,
 	buf[len] = 0;
 	if(sscanf(buf, "%d %d %d", &index, &rate, &vsel) == 3) {
 		my_mpu_opps[index].rate = rate;
-		my_mpu_opps[index].vsel = vsel;
+		my_mpu_opps[index].u_volt = vsel*1000;
 #ifdef SMARTREFLEX
 		my_mpu_opps[index].sr_adjust_vsel = vsel;
 #endif
